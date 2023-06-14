@@ -10,7 +10,8 @@ async function main() {
       name: 'Round Table',
       description: 'This a simple rounde table for dinner',
       unit_price: 50000,
-
+      type: 'For Sale',
+      quantityInStock: 5,
       boms: {
         create: {
           name: 'screw',

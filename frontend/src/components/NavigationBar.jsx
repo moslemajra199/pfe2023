@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { FaUserAlt, FaUserAltSlash } from 'react-icons/fa';
-import {LinkContainer} from "react-router-bootstrap"
+import { LinkContainer } from 'react-router-bootstrap';
 
 function NavigationBar() {
   return (
@@ -22,9 +22,9 @@ function NavigationBar() {
             <Nav.Link href="#features">Features</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
             <NavDropdown title="Product" id="collasible-nav-dropdown">
-                <LinkContainer>
-              <NavDropdown.Item >Product</NavDropdown.Item>
-                </LinkContainer>
+              <LinkContainer to="/admin">
+                <NavDropdown.Item>Product</NavDropdown.Item>
+              </LinkContainer>
               <NavDropdown.Item href="#action/3.2">Components</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Production" id="collasible-nav-dropdown">

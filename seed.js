@@ -8,14 +8,14 @@ async function main() {
     update: {},
     create: {
       name: 'Round Table',
-      description: 'This a simple rounde table for dinner',
+      description: 'This a simple tabme',
       unit_price: 50000,
       type: 'For Sale',
       quantityInStock: 5,
       boms: {
         create: {
           name: 'screw',
-          description: 'used to get table part together',
+          description: 'Four legs Table',
           quantity: 23,
           unit: 'piece',
         },

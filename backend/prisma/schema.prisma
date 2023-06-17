@@ -24,8 +24,8 @@ model Product {
   updatedAt DateTime  @updatedAt
   quantityInStock  Int?
   boms Bom[]
-  operations ProductionOperation[]
-  manufacturingOrder ManufacturingOrder?
+  operations ManufacturingOperation[]
+  manufacturingOrders ManufacturingOrder[]
 }
 
 
@@ -45,7 +45,7 @@ model Bom {
   description String
   quantity Int
   unit String
-  products Product[]
+  products Product[] 
 }
 
 model Machine {
@@ -55,12 +55,13 @@ model Machine {
   productionRate  Int  
   sheduled_start_date DateTime?
   sheduled_end_date DateTime?
-  operations ProductionOperation @relation(fields: [operationId], references: [id])
+  operations ManufacturingOperation @relation(fields: [operationId], references: [id])
   operationId Int @unique
 }
 
-model ProductionOperation {
+model ManufacturingOperation {
   id Int @id @default(autoincrement())
+  name String
   description String
   operationSquence Int
   product Product @relation(fields: [productId], references: [id],onDelete: Cascade )

@@ -3,12 +3,14 @@ import colors from 'colors';
 import cors from 'cors';
 import 'express-async-errors';
 import productRoutes from './routes/productRoutes.js';
+import bomRoutes from './routes/bomRoutes.js';
 import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use('/api/products', productRoutes);
+app.use('/api/boms', bomRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

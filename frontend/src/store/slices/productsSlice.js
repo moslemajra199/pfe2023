@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchProducts } from '../thunks/fetchProducts';
 import { removeProduct } from '../thunks/removePorduct';
+import { createProduct } from '../thunks/addProduct';
 
 const productsSlice = createSlice({
   name: 'products',
@@ -36,6 +37,20 @@ const productsSlice = createSlice({
     });
 
     builder.addCase(removeProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error;
+    });
+
+    builder.addCase(createProduct.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(createProduct.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data.push(action.payload);
+    });
+
+    builder.addCase(createProduct.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;
     });

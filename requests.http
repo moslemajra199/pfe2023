@@ -27,3 +27,8 @@ Content-Type: application/json
 
 ### Delete product
 DELETE http://localhost:5000/api/products/4 HTTP/1.1
+
+
+
+### Fetch Bill Of Materials
+GET http://localhost:5000/api/boms HTTP/1.1

@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import {prisma }from '../config/prisma.js';
 import asyncHandler from 'express-async-handler';
-
-const prisma = new PrismaClient();
 
 const fetchProducts = async (req, res) => {
   try {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { FaPencilAlt, FaPlusSquare } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { removeProduct } from '../store';
@@ -22,15 +23,17 @@ const CustomTable = ({ headers, data }) => {
       <tr key={dataItem.id}>
         <td>{dataItem.id}</td>
         <td>{dataItem.name}</td>
-        <td>{dataItem.description}</td>
         <td>{dataItem.unit_price}</td>
         <td>{dataItem.createedAt}</td>
         <td>{dataItem.type}</td>
         <td>
           <ButtonGroup>
-            <Button className="m-2" variant="primary" size="sm">
-              <FaPlusSquare />
-            </Button>
+            <LinkContainer to="/addProduct">
+              <Button className="m-2" variant="primary" size="sm">
+                <FaPlusSquare />
+              </Button>
+            </LinkContainer>
+
             <Button variant="secondary" className="m-2" size="sm">
               <FaPencilAlt />
             </Button>

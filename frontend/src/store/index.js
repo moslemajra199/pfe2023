@@ -9,3 +9,4 @@ export const store = configureStore({
 
 export * from './thunks/fetchProducts';
 export * from './thunks/removePorduct';
+export * from './thunks/addProduct';

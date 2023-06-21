@@ -1,5 +1,11 @@
-import {prisma }from '../config/prisma.js';
+import { prisma } from '../config/prisma.js';
 import asyncHandler from 'express-async-handler';
+
+/**
+|--------------------------------------------------
+| To: Valdiate product uisng Joy
+|--------------------------------------------------
+*/
 
 const fetchProducts = async (req, res) => {
   try {
@@ -11,7 +17,7 @@ const fetchProducts = async (req, res) => {
   }
 };
 
-const getProduct = asyncHandler(async (req, res, next) => {
+const getProduct = asyncHandler(async (req, res) => {
   try {
     const id = +req.params.id;
     const product = await prisma.product.findUnique({
@@ -22,6 +28,8 @@ const getProduct = asyncHandler(async (req, res, next) => {
 
     if (!product) {
       return res.status(404).send(`product with id = ${id} was not found`);
+    } else {
+      res.status(200).json(product);
     }
   } catch (error) {
     res.status(500).json({
@@ -89,7 +97,7 @@ const removeProduct = async (req, res) => {
 
     if (!product) {
       res.status(404).json({
-        error: `PRoduct with id = ${id} was not found`,
+        error: `Product with id = ${id} was not found`,
       });
     } else {
       res.status(200).json(product);
@@ -101,10 +109,32 @@ const removeProduct = async (req, res) => {
   }
 };
 
+const assignBomToProduct = async (req, res) => {
+  const { productId, bomId } = req.params;
+
+  try {
+    const product = await prisma.product.update({
+      where: {
+        id: Number(productId),
+      },
+      data: {
+        boms: {
+          connect: { id: Number(bomId) },
+        },
+      },
+    });
+
+    return res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 export {
   fetchProducts,
   getProduct,
   createProduct,
   updateProduct,
   removeProduct,
+  assignBomToProduct,
 };

@@ -19,24 +19,26 @@ const CustomTable = ({ headers, data }) => {
   };
 
   const renderedData = data.map((dataItem) => {
+    console.log(dataItem.id);
     return (
       <tr key={dataItem.id}>
         <td>{dataItem.id}</td>
         <td>{dataItem.name}</td>
         <td>{dataItem.unit_price}</td>
-        <td>{dataItem.createedAt}</td>
         <td>{dataItem.type}</td>
         <td>
           <ButtonGroup>
-            <LinkContainer to="/addProduct">
+            <LinkContainer to={`/productDetails/${dataItem.id}`}>
               <Button className="m-2" variant="primary" size="sm">
-                <FaPlusSquare />
+                details
               </Button>
             </LinkContainer>
 
-            <Button variant="secondary" className="m-2" size="sm">
-              <FaPencilAlt />
-            </Button>
+            <LinkContainer to={`/updateProduct/${dataItem.id}`}>
+              <Button variant="secondary" className="m-2" size="sm">
+                <FaPencilAlt />
+              </Button>
+            </LinkContainer>
             <Button
               onClick={() => handleRemoveProduct(dataItem)}
               variant="danger"

@@ -11,11 +11,11 @@ const ProductBoard = () => {
     <div>
       <div className="d-grid gap-2 mb-5">
         <Button
-          onClick={() => navigate('/productDetails')}
+          onClick={() => navigate('/addProduct')}
           variant="primary"
           size="lg"
         >
-          Go To products Details
+          + Add Product
         </Button>
       </div>
 

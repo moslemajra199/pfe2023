@@ -15,14 +15,13 @@ import ProductBoard from '../ProductBoard';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const AdminBoardScreen = () => {
-  const headers = ['name', 'unit_price', 'createdAt', 'type', 'Actions'];
+  const headers = ['name', 'unit_price', 'type', 'Actions'];
   const [isProductLoading, setIsProductLoading] = useState(false);
   const [errorLoadingProducts, setErrorLoadingProduct] = useState(null);
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const { data, isLoading, error } = products;
 
-  const x = ' This is a test';
   useEffect(() => {
     setIsProductLoading(true);
     dispatch(fetchProducts())
@@ -53,7 +52,7 @@ const AdminBoardScreen = () => {
           <Row>
             <Col lg={8}>
               {/* <ProductBoard headers={headers} data={data} /> */}
-              <Outlet context={[headers, data, x]} />
+              <Outlet context={[headers, data]} />
             </Col>
             <Col lg={4}>
               <CardContainer variant="primary">

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Bom" ALTER COLUMN "unit" DROP NOT NULL;

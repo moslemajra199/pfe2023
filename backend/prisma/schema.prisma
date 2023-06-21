@@ -18,22 +18,13 @@ model Product {
   description String?
   unit_price Float
   codeBar String?
-  image String?
   type String?
   createedAt DateTime @default(now())
   updatedAt DateTime  @updatedAt
   quantityInStock  Int?
-  boms Bom[]
-  operations ManufacturingOperation[]
-  manufacturingOrders ManufacturingOrder[]
-}
+  bom Bom?
+  manufacturingOrders ManufacturingOder[]
 
-
-model Material{
-  id Int @id @default(autoincrement())
-  name String
-  category String
-  quantity Int
 }
 
 
@@ -42,51 +33,33 @@ model Bom {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String
-  description String
-  quantity Int
-  unit String
-  products Product[] 
-}
-
-model Machine {
-  id Int @id @default(autoincrement())
-  machine_name String
-  state  State @default(ACTIVE)
-  productionRate  Int  
-  sheduled_start_date DateTime?
-  sheduled_end_date DateTime?
-  operations ManufacturingOperation @relation(fields: [operationId], references: [id])
-  operationId Int @unique
-}
-
-model ManufacturingOperation {
-  id Int @id @default(autoincrement())
-  name String
-  description String
-  operationSquence Int
-  product Product @relation(fields: [productId], references: [id],onDelete: Cascade )
-  productId Int
-  machine Machine?
-  planned_start_date DateTime?
-  planned_end_date DateTime?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-}
-
-
-model ManufacturingOrder {
-  id Int @id @default(autoincrement())
+  quantity Float
   product Product @relation(fields: [productId], references: [id])
   productId Int @unique
-  quantity Int?  @default(20)
-  scheduled_start_date DateTime?
-  scheduled_end_date   DateTime?
-  state               State?
-  created_at          DateTime  @default(now())
-  updated_at          DateTime  @updatedAt
+  components Component[]
 }
 
-enum State {
-  ACTIVE
-  INACTIVE
+model Component {
+  id Int @id @default(autoincrement())
+  bom Bom @relation(fields: [bomId], references: [id])
+  bomId Int
+  quantity Float
+  
 }
+
+model ManufacturingOder {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  product Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantityToProduct Float
+  sheduled_start_date DateTime @default(now())
+  sheduled_end_date DateTime @default(now())
+
+}
+
+
+
+
+

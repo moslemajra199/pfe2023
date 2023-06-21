@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchProducts } from '../thunks/fetchProducts';
 import { removeProduct } from '../thunks/removePorduct';
-import { createProduct } from '../thunks/addProduct';
+import { createProduct } from '../thunks/createProduct';
+import { getProductById } from '../thunks/getProductById';
+import { updateProduct } from '../thunks/updateProduct';
 
 const productsSlice = createSlice({
   name: 'products',
@@ -9,6 +11,7 @@ const productsSlice = createSlice({
     data: [],
     isLoading: false,
     error: null,
+    product: null,
   },
 
   extraReducers(builder) {
@@ -51,6 +54,34 @@ const productsSlice = createSlice({
     });
 
     builder.addCase(createProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error;
+    });
+
+    builder.addCase(getProductById.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(getProductById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.product = action.payload;
+    });
+
+    builder.addCase(getProductById, (state, action) => {
+      state.isLoading = false;
+      state.error = error;
+    });
+
+    builder.addCase(updateProduct.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      state.isLoading = false;
+      
+    });
+
+    builder.addCase(updateProduct.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;
     });

@@ -1,38 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  Card,
-  Button,
-  ButtonGroup,
-} from 'react-bootstrap';
+import { Row, Col, Form, FormGroup, Card, Button } from 'react-bootstrap';
 import Loader from '../shared/Loader';
+import Message from '../shared/Message';
 import Header from '../Header';
-import MultipleSelectMenu from '../shared/MultipleSelectMenu';
+import Barcode from 'react-barcode';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { createProduct } from '../../store';
 
 const addProduct = () => {
-  const boms = [
-    { id: 1, name: 'test1' },
-    { id: 2, name: 'test2' },
-    { id: 3, name: 'test3' },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorCreatingProduct, setErrorCreatingProduct] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const handleOptionChange = (option) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
-      console.log(selectedOptions);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    unit_price: 0,
+    codeBar: '',
+    type: '',
+    quantityInStock: 0,
+  });
+
+  const { name, description, unit_price, codeBar, type, quantityInStock } =
+    formData;
+
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    dispatch(createProduct(formData))
+      .unwrap()
+      .then(() => {
+        setIsLoading(false);
+        navigate('/admin');
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setErrorCreatingProduct(error);
+      });
+  };
+
+  const onMutated = (event) => {
+    let input = event.target.value;
+    if (
+      event.target.id === 'unit_price' ||
+      event.target.id === 'quantityInStock'
+    ) {
+      input = Number(event.target.value);
     }
+    setFormData((prevState) => ({
+      ...prevState,
+      [event.target.id]: input,
+    }));
   };
 
-  const handleMenuClick = () => {
-    setMenuOpen(!menuOpen);
-  };
+  if (errorCreatingProduct) {
+    return <Message text={errorCreatingProduct.message} variant="danger" />;
+  }
   return (
     <>
       <Header>
@@ -43,87 +68,104 @@ const addProduct = () => {
       <div className="d-flex p-10 justify-content-center align-items-center">
         <Card className="mt-5">
           <Card.Body>
-            <Form>
+            <Form onSubmit={onFormSubmit}>
               <Row>
                 <Col md={4}>
-                  <FormGroup controlId="name">
+                  <FormGroup>
                     <Form.Label>Product Name</Form.Label>
-                    <Form.Control placeholder="Enter product name..." />
+                    <Form.Control
+                      id="name"
+                      onChange={onMutated}
+                      value={name}
+                      placeholder="Enter product name..."
+                    />
                   </FormGroup>
                 </Col>
                 <Col md={8}>
-                  <FormGroup controlId="description">
+                  <FormGroup>
                     <Form.Label>Add Description</Form.Label>
                     <Form.Control
+                      id="description"
                       type="textarea"
                       placeholder="Enter description...."
+                      value={description}
+                      onChange={onMutated}
                     />
                   </FormGroup>
                 </Col>
               </Row>
               <Row className="mt-3">
                 <Col>
-                  <FormGroup controlId="price">
+                  <FormGroup>
                     <Form.Label>Unit Price</Form.Label>
                     <Form.Control
+                      id="unit_price"
                       type="number"
                       placeholder="Enter unit price..."
+                      value={unit_price}
+                      onChange={onMutated}
                     />
                   </FormGroup>
                 </Col>
                 <Col>
-                  <FormGroup controlId="price">
+                  <FormGroup>
                     <Form.Label>Code Bar</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Codebar..." />
+                    <Form.Control
+                      id="codeBar"
+                      value={codeBar}
+                      onChange={onMutated}
+                      type="text"
+                      placeholder="Enter Codebar..."
+                    />
                   </FormGroup>
                 </Col>
               </Row>
               <Row className="mt-3">
                 <Col>
-                  <FormGroup controlId="price">
+                  <FormGroup>
                     <Form.Label>Type</Form.Label>
                     <Form.Control
+                      id="type"
                       type="String"
+                      value={type}
+                      onChange={onMutated}
                       placeholder="Enter product type..."
                     />
                   </FormGroup>
                 </Col>
                 <Col>
-                  <FormGroup controlId="qty">
+                  <FormGroup>
                     <Form.Label>Quantity in stock</Form.Label>
                     <Form.Control
+                      id="quantityInStock"
                       type="number"
+                      value={quantityInStock}
+                      onChange={onMutated}
                       placeholder="Enter Number in Stock..."
                     />
                   </FormGroup>
                 </Col>
               </Row>
 
-              <div className="mt-5">
-                <MultipleSelectMenu
-                  selectedOptions={selectedOptions}
-                  label="Select BOM"
-                  options={boms}
-                  handleOptionChange={handleOptionChange}
-                />
-              </div>
-
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col md={8}>
-                  <div className="d-grid">
+                  <div className="d-grid gap-2">
                     <Button size="lg" variant="primary" type="submit">
-                      Submit
+                      {isLoading ? <Loader /> : 'Add Product'}
                     </Button>
                   </div>
                 </Col>
                 <Col md={4}>
-                  <Button  size='lg' variant="warning" type="reset">
-                    Clear
-                  </Button>
+                  <div className="d-grid">
+                    <Button size="lg" variant="warning" type="reset">
+                      Clear
+                    </Button>
+                  </div>
                 </Col>
               </Row>
             </Form>
           </Card.Body>
+          <Barcode value={codeBar} />;
         </Card>
       </div>
     </>

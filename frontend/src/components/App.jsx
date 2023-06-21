@@ -9,6 +9,8 @@ import ProductBoard from './ProductBoard';
 import MachineBoard from './MachinesBoard';
 import BillOfMaterialBoard from './BillOfMaterialBoard';
 import ProductsDetailsScreen from './screens/ProductsDetailsScreen';
+import UpdateProduct from './screens/UpdateProduct';
+import ProductDetails from './screens/ProductDetails';
 
 const App = () => {
   return (
@@ -22,7 +24,9 @@ const App = () => {
           <Route path="/admin/machines" element={<MachineBoard />} />
         </Route>
         <Route path="/addProduct" element={<AddProduct />} />
-        <Route path="/productDetails" element={<ProductsDetailsScreen />} />
+        <Route path="/updateProduct/:productId" element={<UpdateProduct />} />
+        {/* <Route path="/products" element={<ProductsDetailsScreen />} /> */}
+        <Route path="/productDetails/:productId" element={<ProductDetails />} />
       </Routes>
       <Footer />
     </>

@@ -24,6 +24,9 @@ const getProduct = asyncHandler(async (req, res) => {
       where: {
         id: id,
       },
+      include: {
+        bom: true,
+      },
     });
 
     if (!product) {
@@ -109,26 +112,26 @@ const removeProduct = async (req, res) => {
   }
 };
 
-const assignBomToProduct = async (req, res) => {
-  const { productId, bomId } = req.params;
+// const assignBomToProduct = async (req, res) => {
+//   const { productId, bomId } = req.params;
 
-  try {
-    const product = await prisma.product.update({
-      where: {
-        id: Number(productId),
-      },
-      data: {
-        boms: {
-          connect: { id: Number(bomId) },
-        },
-      },
-    });
+//   try {
+//     const product = await prisma.product.update({
+//       where: {
+//         id: Number(productId),
+//       },
+//       data: {
+//         boms: {
+//           connect: { id: Number(bomId) },
+//         },
+//       },
+//     });
 
-    return res.status(200).json(product);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+//     return res.status(200).json(product);
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
 
 export {
   fetchProducts,
@@ -136,5 +139,4 @@ export {
   createProduct,
   updateProduct,
   removeProduct,
-  assignBomToProduct,
 };

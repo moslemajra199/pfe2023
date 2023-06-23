@@ -12,13 +12,16 @@ async function main() {
       unit_price: 50000,
       type: 'For Sale',
       quantityInStock: 5,
-      boms: {
-        create: {
-          name: 'screw',
-          description: 'Four legs Table',
-          quantity: 23,
-          unit: 'piece',
-        },
+      bom: {
+        connectOrCreate: {
+          where: {
+            id: 10
+          },
+          create: {
+            description: "this is a test",
+            quantity: 20
+          }
+        }
       },
     },
   });

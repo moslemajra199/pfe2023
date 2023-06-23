@@ -32,16 +32,16 @@ model Bom {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name String
+  description String?
   quantity Float
-  product Product @relation(fields: [productId], references: [id])
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int @unique
   components Component[]
 }
 
 model Component {
   id Int @id @default(autoincrement())
-  bom Bom @relation(fields: [bomId], references: [id])
+  bom Bom @relation(fields: [bomId], references: [id], onDelete: Cascade)
   bomId Int
   quantity Float
   
@@ -51,7 +51,7 @@ model ManufacturingOder {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  product Product @relation(fields: [productId], references: [id])
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   quantityToProduct Float
   sheduled_start_date DateTime @default(now())

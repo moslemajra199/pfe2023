@@ -8,7 +8,12 @@ import { prisma } from '../config/prisma.js';
 
 const fetchBoms = async (req, res) => {
   try {
-    const booms = await prisma.bom.findMany();
+    const booms = await prisma.bom.findMany({
+      include: {
+        product: true,
+        components: true,
+      },
+    });
     res.status(200).json(booms);
   } catch (error) {
     res.status(500).json(error);
@@ -39,13 +44,14 @@ const getBomById = async (req, res) => {
 
 const createBom = async (req, res) => {
   console.log(req.body);
+  // const { productId, ...rest } = req.body;
+  //console.log(rest, productId);
   try {
     const bom = await prisma.bom.create({
       data: {
         ...req.body,
       },
     });
-
     return res.status(201).json(bom);
   } catch (error) {
     res.status(500).json(error);
